@@ -13,22 +13,6 @@ def get_range_for_difficulty(difficulty: str):
     return 1, 100
 
 
-def parse_guess(raw: str):
-    if raw is None:
-        return False, None, "Enter a guess."
-
-    if raw == "":
-        return False, None, "Enter a guess."
-
-    try:
-        if "." in raw:
-            value = int(float(raw))
-        else:
-            value = int(raw)
-    except Exception:
-        return False, None, "That is not a number."
-
-    return True, value, None
 
 def update_score(current_score: int, outcome: str, attempt_number: int):
     if outcome == "Win":
@@ -148,7 +132,15 @@ if submit:
 
         if show_hint:
             st.warning(message)
+if outcome != "Win":
+    distance = abs(guess_int - st.session_state.secret)
 
+    if distance <= 5:
+        st.error("🔥 Very hot! You're extremely close.")
+    elif distance <= 15:
+        st.warning("🌤️ Warm! You're getting close.")
+    else:
+        st.info("🧊 Cold! You're still far away.")
         st.session_state.score = update_score(
             current_score=st.session_state.score,
             outcome=outcome,
