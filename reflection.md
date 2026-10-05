@@ -1,51 +1,38 @@
 # 💭 Reflection: Game Glitch Investigator
 
-Answer each question in 3 to 5 sentences. Be specific and honest about what actually happened while you worked. This is about your process, not trying to sound perfect.
-
 ## 1. What was broken when you started?
 
-- What did the game look like the first time you ran it?
-- List at least two concrete bugs you noticed at the start  
-  (for example: "the hints were backwards").
+When I first ran the game, the interface looked normal, but the internal game logic had several problems. The game started with 7 attempts left even though Normal difficulty allowed 8 attempts, because the attempts counter was initialized at 1 instead of 0. The HIGHER and LOWER hints were also reversed, so guessing below the secret told me to go lower instead of higher. I later found another bug where the secret number was sometimes converted from an integer to a string, causing a TypeError during comparison.
 
 **Bug Reproduction Log**
 
-Document at least 3 bugs you found. Add rows as needed.
-
 | Input | Expected Behavior | Actual Behavior | Console Output / Error |
 |-------|-------------------|-----------------|------------------------|
-| | | | |
-| | | | |
-| | | | |
+| Start a new Normal game | 8 attempts left and attempts = 0 | Game showed 7 attempts left and attempts = 1 | No console error |
+| Secret = 19, guess = 10 | Go HIGHER | Go LOWER | No console error |
+| Secret = 19, guess = 30 | Go LOWER | Go HIGHER | No console error |
+| Secret = 55, guess = 20 | Compare two integers and return a hint | Secret was converted to a string and comparison failed | `TypeError: '>' not supported between instances of 'int' and 'str'` |
 
 ---
 
 ## 2. How did you use AI as a teammate?
 
-- Which AI tools did you use on this project (for example: ChatGPT, Gemini, Copilot)?
-- Give one example of an AI suggestion that was correct (including what the AI suggested and how you verified the result).
-- Give one example of an AI suggestion you did not accept as written (including what the AI suggested, why you rejected or changed it, and how you verified your version). It does not have to be a suggestion that was wrong: over-engineered, out of scope, harder to read, or a poor fit for this codebase all count.
+I used ChatGPT as an AI teammate to help inspect the behavior, locate likely bugs, refactor the code, and create tests. One correct suggestion was to move `check_guess()` into `logic_utils.py` and fix the reversed hint messages so a high guess says "Go LOWER" and a low guess says "Go HIGHER." I verified that suggestion manually in Streamlit and then with pytest, where all three tests passed. One suggestion I did not accept as written was the initial assumption that submitting a guess after winning was incorrectly increasing the attempt count; after checking the debug panel and history more carefully, I realized the displayed state was stale and the more important problems were the attempt initialization and the secret being converted to a string.
 
 ---
 
 ## 3. Debugging and testing your fixes
 
-- How did you decide whether a bug was really fixed?
-- Describe at least one test you ran (manual or using pytest)  
-  and what it showed you about your code.
-- Did AI help you design or understand any tests? How?
+I considered a bug fixed only after I could reproduce the original problem and then confirm that the same scenario behaved correctly after the change. For example, after fixing `check_guess()`, I tested a guess below the secret and confirmed that the game returned "Go HIGHER," then tested a guess above the secret and confirmed that it returned "Go LOWER." I also ran `python -m pytest`, and all three tests passed, including tests for a winning guess, a guess that was too high, and a guess that was too low. AI helped me understand how to structure the tests around the tuple returned by `check_guess()` instead of comparing the entire result directly to a string.
 
 ---
 
 ## 4. What did you learn about Streamlit and state?
 
-- How would you explain Streamlit "reruns" and session state to a friend who has never used Streamlit?
+I learned that Streamlit reruns the Python script when the user interacts with the app, so values that need to survive between reruns must be stored in `st.session_state`. I would explain session state as a small memory area that keeps important values such as the secret number, attempts, score, status, and history while the page reruns. I also learned that the order in which the page is rendered and state is updated can make displayed values look temporarily stale. This made me realize that debugging Streamlit requires checking both the UI and the underlying session state.
 
 ---
 
 ## 5. Looking ahead: your developer habits
 
-- What is one habit or strategy from this project that you want to reuse in future labs or projects?
-  - This could be a testing habit, a prompting strategy, or a way you used Git.
-- What is one thing you would do differently next time you work with AI on a coding task?
-- In one or two sentences, describe how this project changed the way you think about AI generated code.
+One habit I want to reuse is reproducing a bug with a specific input before changing the code, then testing the exact same scenario after the fix. I also want to keep using small Git commits so each repair is documented separately and is easier to review or undo. Next time I work with AI, I would verify its interpretation sooner instead of assuming its first explanation of a bug is correct. This project changed the way I think about AI-generated code because code can look reasonable and still contain subtle logic, state, and type errors, so human verification is still essential.
