@@ -1,15 +1,33 @@
-# FIX: Refactored and corrected high/low hint logic with AI assistance.
-def get_range_for_difficulty(difficulty: str):
-    """Return (low, high) inclusive range for a given difficulty."""
-    raise NotImplementedError("Refactor this function from app.py into logic_utils.py")
-
-
-def parse_guess(raw: str):
+def get_range_for_difficulty(difficulty: str) -> tuple[int, int]:
     """
-    Parse user input into an integer guess.
+    Return the inclusive number range for a game difficulty.
+
+    Args:
+        difficulty: Difficulty level selected by the player.
 
     Returns:
-        (ok, guess_int, error_message)
+        A tuple containing the minimum and maximum allowed values.
+
+    Raises:
+        NotImplementedError: Until this logic is refactored from app.py.
+    """
+    raise NotImplementedError(
+        "Refactor this function from app.py into logic_utils.py"
+    )
+
+
+def parse_guess(raw: str) -> tuple[bool, int | None, str | None]:
+    """
+    Parse raw user input into an integer guess.
+
+    Args:
+        raw: Text entered by the player.
+
+    Returns:
+        A tuple containing:
+        - whether parsing succeeded
+        - the parsed integer, or None
+        - an error message, or None
     """
     if raw is None or raw == "":
         return False, None, "Enter a guess."
@@ -24,11 +42,18 @@ def parse_guess(raw: str):
 
     return True, value, None
 
-def check_guess(guess, secret):
-    """
-    Compare guess to secret and return (outcome, message).
 
-    outcome examples: "Win", "Too High", "Too Low"
+# FIX: Refactored and corrected high/low hint logic with AI assistance.
+def check_guess(guess: int, secret: int) -> tuple[str, str]:
+    """
+    Compare a player's guess with the secret number.
+
+    Args:
+        guess: Number entered by the player.
+        secret: Secret number the player is trying to guess.
+
+    Returns:
+        A tuple containing the outcome and user-facing hint message.
     """
     if guess == secret:
         return "Win", "🎉 Correct!"

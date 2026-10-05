@@ -25,3 +25,27 @@ I ran:
 `python -m pytest`
 
 All six tests passed successfully.
+
+## Challenge 3: Professional Documentation and Style
+
+### Prompt Used
+Review `logic_utils.py` and improve the function documentation and PEP 8 style without changing the existing behavior. Add professional docstrings to all functions and keep the code simple and readable.
+
+### Changes Applied
+- Added detailed docstrings with arguments and return values.
+- Added type hints to functions.
+- Kept two blank lines between top-level functions.
+- Moved the FIX comment next to the function it describes.
+- Kept line lengths readable.
+- Added a final newline to resolve the W292 style warning.
+
+### Verification
+
+I ran:
+
+`python -m pytest`
+
+Result:
+
+```text
+6 passed in 0.01s
