@@ -1,5 +1,5 @@
 # FIX: Initialize attempts at 0 so a new game starts with the full attempt limit.
-from logic_utils import check_guess
+from logic_utils import check_guess, parse_guess
 import random
 import streamlit as st
 

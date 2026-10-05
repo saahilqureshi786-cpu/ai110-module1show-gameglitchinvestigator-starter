@@ -1,76 +1,27 @@
-# AI Interactions Log
+# AI Interactions
 
-> **Stretch features only.** Only fill in the sections that apply to stretch features you attempted. If you did not attempt a stretch feature, leave its section blank or delete it. This file is not required for the core project.
+## Challenge 1: Advanced Edge-Case Testing
 
----
+### Prompt Used
+Help me add pytest cases for edge-case inputs in the Game Glitch Investigator project. Test non-numeric input, empty input, and negative numbers using the parse_guess() function.
 
-## Agent Workflow (SF8)
+### Edge Cases Chosen
 
-> Document your experience using an AI agent (e.g., Cursor Agent, Claude, Copilot) to make multi-step changes autonomously.
+1. **Non-numeric input (`"hello"`)**
+   - Chosen to verify that invalid text does not crash the game.
+   - Expected result: return an error saying the input is not a number.
 
-**What task did you give the agent?**
+2. **Empty input (`""`)**
+   - Chosen to verify that submitting no value is handled gracefully.
+   - Expected result: return an "Enter a guess." error.
 
-<!-- Describe the goal you asked the agent to accomplish -->
+3. **Negative number (`"-5"`)**
+   - Chosen to verify that numeric parsing still works for signed integers.
+   - Expected result: successfully parse the value as `-5`.
 
-**What did the agent do?**
+### Verification
+I ran:
 
-<!-- List the steps the agent took (files edited, commands run, etc.) -->
+`python -m pytest`
 
-**What did you have to verify or fix manually?**
-
-<!-- Describe anything the agent got wrong or that required human review -->
-
----
-
-## Test Generation (SF7)
-
-> Document how you used AI to help generate or improve tests.
-
-| Edge Case | Prompt Used | AI-Suggested Test | Did It Pass? | Your Reasoning |
-|-----------|-------------|-------------------|--------------|----------------|
-| | | | | |
-| | | | | |
-| | | | | |
-
----
-
-## Linting & Style (SF9)
-
-> Document your use of AI for linting or code style improvements.
-
-**Prompt used:**
-
-```
-<!-- Paste the prompt you gave the AI -->
-```
-
-**Linting output before:**
-
-```
-<!-- Paste relevant linter warnings/errors -->
-```
-
-**Changes applied:**
-
-<!-- Describe what you changed based on the AI's suggestions -->
-
----
-
-## Model Comparison (SF11)
-
-> Compare two AI models on the same task.
-
-**Task given to both models:**
-
-<!-- Describe what you asked each model to do -->
-
-| | Model A | Model B |
-|-|---------|---------|
-| **Model name** | | |
-| **Response summary** | | |
-| **More Pythonic?** | | |
-| **Clearer explanation?** | | |
-
-**Which did you prefer and why?**
-
-<!-- Your conclusion -->
+All six tests passed successfully.
